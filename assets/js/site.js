@@ -26,18 +26,28 @@
       event.preventDefault();
       const required = Array.from(form.querySelectorAll('[required]'));
       const missing = required.filter((field) => !field.value.trim());
+      const emailField = form.querySelector('input[type="email"]');
       form.classList.remove('is-success', 'is-error');
       required.forEach((field) => field.removeAttribute('aria-invalid'));
       if (missing.length) {
         missing.forEach((field) => field.setAttribute('aria-invalid', 'true'));
         form.classList.add('is-error');
-        if (status) status.textContent = 'Bitte füllen Sie die markierten Felder aus.';
+        const label = form.querySelector(`label[for="${missing[0].id}"]`);
+        const labelText = label ? label.textContent.replace(/\s*optional\s*/i, '').trim() : 'das markierte Feld';
+        if (status) status.textContent = `Bitte ergänzen Sie: ${labelText}.`;
         missing[0].focus();
+        return;
+      }
+      if (emailField && !emailField.checkValidity()) {
+        emailField.setAttribute('aria-invalid', 'true');
+        form.classList.add('is-error');
+        if (status) status.textContent = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
+        emailField.focus();
         return;
       }
       form.reset();
       form.classList.add('is-success');
-      if (status) status.textContent = 'Danke. Ihre Angaben sind vollständig und werden über die CMS-Formularverarbeitung bearbeitet.';
+      if (status) status.textContent = 'Danke. Ihre Anfrage wurde erfasst. Caroline meldet sich bei Ihnen.';
     });
   });
 
