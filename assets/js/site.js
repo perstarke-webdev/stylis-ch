@@ -47,7 +47,7 @@
       }
       form.reset();
       form.classList.add('is-success');
-      if (status) status.textContent = 'Danke. Ihre Anfrage wurde erfasst. Caroline meldet sich bei Ihnen.';
+      if (status) status.textContent = 'Danke. Ihre Anfrage wurde erfasst. Ich melde mich bei Ihnen.';
     });
   });
 

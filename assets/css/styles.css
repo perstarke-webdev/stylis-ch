@@ -156,7 +156,7 @@ p { margin: 0; }
 .trust-strip { background: linear-gradient(90deg, var(--color-accent-soft), var(--color-accent-tint)), var(--color-paper); color: var(--color-ink); border-block: 1px solid var(--color-accent-line); }
 .trust-strip__inner { display: grid; grid-template-columns: minmax(140px, .6fr) 2.4fr; gap: 1rem; align-items: stretch; padding-block: 1.05rem; }
 .trust-strip h2 { font-family: var(--font-body); font-size: var(--text-small); line-height: 1.2; font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 0; color: var(--color-accent-dark); align-self: center; }
-.trust-strip__items { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; }
+.trust-strip__items { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: .8rem; }
 .trust-strip__items div { border-left: 1px solid var(--color-accent-line); padding-left: .85rem; min-height: 58px; display: flex; flex-direction: column; justify-content: center; }
 .trust-strip strong { display: block; font-size: 1.04rem; line-height: 1.18; font-variant-numeric: tabular-nums; }
 .trust-strip span { color: var(--color-accent-muted); font-size: var(--text-small); line-height: var(--leading-small); }
@@ -225,7 +225,7 @@ p { margin: 0; }
 .press-card__body p { color: var(--color-berry); font-size: var(--text-caption); font-weight: var(--weight-bold); line-height: 1.2; text-transform: uppercase; letter-spacing: 0; margin-bottom: .35rem; font-variant-numeric: tabular-nums; }
 .press-card__body h3 { font-family: var(--font-body); font-size: 1.02rem; line-height: 1.22; font-weight: var(--weight-bold); }
 .press-card__body span { display: block; color: var(--color-muted); margin-top: .35rem; font-size: var(--text-small); line-height: var(--leading-small); }
-.cta-band { background: linear-gradient(135deg, var(--color-accent-soft), var(--color-accent-tint)), var(--color-paper); color: var(--color-ink); padding-block: clamp(3.5rem, 6vw, 5.5rem); border-block: 1px solid var(--color-accent-line); }
+.cta-band { background: linear-gradient(135deg, var(--color-accent-soft), var(--color-accent-tint)), var(--color-paper); color: var(--color-ink); padding-block: clamp(3.5rem, 6vw, 5.5rem); border-top: 0; border-bottom: 1px solid var(--color-accent-line); }
 .cta-band__inner { display: grid; grid-template-columns: 1fr auto; gap: clamp(1.25rem, 4vw, 3rem); align-items: center; }
 .cta-band h2 { max-width: 760px; }
 .cta-band p:not(.eyebrow) { color: var(--color-accent-muted); max-width: 720px; margin-top: .75rem; }
