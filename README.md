@@ -37,11 +37,12 @@ Final CMS content block count:
 3. Split story
 4. Service grid
 5. Service detail
-6. Case grid
-7. Media grid, including gallery and press-card variants
+6. Case grid, including compact proof cards and full reference-story variants
+7. Media grid, including gallery, before/after comparison and press-card variants
 8. CTA band
 9. Contact block
+10. Legal text
 
-Header and footer should be handled as global templates. Legal pages can use a simple legal template, not a separate marketing content component. Background changes such as `section--tint`, reversed split layouts, 3- or 4-item trust strips, and home/subpage hero sizing are component variants, not separate components.
+Header and footer should be handled as global templates and are marked separately in the HTML. Background changes such as `section--tint`, reversed split layouts, 3- or 4-item trust strips, and home/subpage hero sizing are component variants, not separate components. Legal pages use one simple legal text component.
 
 The contact form currently shows a local success state only and does not submit to a third-party form backend; it is prepared for later CMS/AWS handling.

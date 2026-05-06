@@ -33,6 +33,7 @@
       '.service-detail__copy',
       '.benefit-panel',
       '.case-card',
+      '.reference-story',
       '.gallery-item',
       '.press-card',
       '.cta-band__inner',
@@ -135,24 +136,90 @@
     });
   });
 
-  const lightboxButtons = document.querySelectorAll('[data-lightbox]');
+  const lightboxButtons = document.querySelectorAll('[data-lightbox], [data-lightbox-gallery]');
   if (lightboxButtons.length) {
     const dialog = document.createElement('dialog');
     dialog.className = 'lightbox';
-    dialog.innerHTML = '<button type="button" class="lightbox__close" aria-label="Ansicht schliessen">×</button><img alt="">';
+    dialog.innerHTML = [
+      '<div class="lightbox__frame">',
+      '<button type="button" class="lightbox__close" aria-label="Ansicht schliessen">×</button>',
+      '<button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Vorheriges Bild">‹</button>',
+      '<figure class="lightbox__figure">',
+      '<img alt="">',
+      '<figcaption class="lightbox__caption"><span data-lightbox-caption></span><span class="lightbox__counter" data-lightbox-counter></span></figcaption>',
+      '</figure>',
+      '<button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Nächstes Bild">›</button>',
+      '</div>',
+    ].join('');
     document.body.appendChild(dialog);
     const img = dialog.querySelector('img');
-    const close = dialog.querySelector('button');
+    const close = dialog.querySelector('.lightbox__close');
+    const previous = dialog.querySelector('.lightbox__nav--prev');
+    const next = dialog.querySelector('.lightbox__nav--next');
+    const caption = dialog.querySelector('[data-lightbox-caption]');
+    const counter = dialog.querySelector('[data-lightbox-counter]');
+    let gallery = [];
+    let galleryIndex = 0;
+    let touchStartX = 0;
+
+    const parseGallery = (button) => {
+      if (button.dataset.lightboxGallery) {
+        try {
+          const items = JSON.parse(button.dataset.lightboxGallery);
+          if (Array.isArray(items) && items.length) return items;
+        } catch (error) {
+          return [];
+        }
+      }
+      if (!button.dataset.lightbox) return [];
+      return [{ src: button.dataset.lightbox, alt: button.dataset.lightboxAlt || '', caption: button.dataset.lightboxAlt || '' }];
+    };
+
+    const renderLightbox = () => {
+      const item = gallery[galleryIndex];
+      if (!item) return;
+      img.src = item.src;
+      img.alt = item.alt || '';
+      caption.textContent = item.caption || item.alt || '';
+      counter.textContent = gallery.length > 1 ? `${galleryIndex + 1} / ${gallery.length}` : '';
+      const hasMultiple = gallery.length > 1;
+      previous.hidden = !hasMultiple;
+      next.hidden = !hasMultiple;
+    };
+
+    const moveLightbox = (direction) => {
+      if (gallery.length < 2) return;
+      galleryIndex = (galleryIndex + direction + gallery.length) % gallery.length;
+      renderLightbox();
+    };
+
     lightboxButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        img.src = button.dataset.lightbox;
-        img.alt = button.dataset.lightboxAlt || '';
+        gallery = parseGallery(button);
+        galleryIndex = 0;
+        renderLightbox();
         dialog.showModal();
+        close.focus({ preventScroll: true });
       });
     });
     close.addEventListener('click', () => dialog.close());
+    previous.addEventListener('click', () => moveLightbox(-1));
+    next.addEventListener('click', () => moveLightbox(1));
     dialog.addEventListener('click', (event) => {
       if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('touchstart', (event) => {
+      touchStartX = event.changedTouches[0].clientX;
+    }, { passive: true });
+    dialog.addEventListener('touchend', (event) => {
+      const deltaX = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(deltaX) < 44) return;
+      moveLightbox(deltaX > 0 ? -1 : 1);
+    }, { passive: true });
+    document.addEventListener('keydown', (event) => {
+      if (!dialog.open) return;
+      if (event.key === 'ArrowLeft') moveLightbox(-1);
+      if (event.key === 'ArrowRight') moveLightbox(1);
     });
   }
 
