@@ -1,0 +1,9 @@
+.DS_Store
+briefing/
+assets/images/source/
+_site/
+.tmp-validation/
+.jekyll-cache/
+.sass-cache/
+.bundle/
+vendor/

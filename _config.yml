@@ -1,0 +1,24 @@
+locale: "de-CH"
+lang: "de-CH"
+title: "stylisch Wohnberatung"
+description: "Wohn- und Einrichtungsberatung in der deutschsprachigen Schweiz mit Caroline Stupf."
+url: "https://www.stylis.ch"
+baseurl: ""
+timezone: Europe/Zurich
+noindex_site: true
+
+exclude:
+  - briefing
+  - assets/images/source
+  - .git
+  - .jekyll-cache
+  - .sass-cache
+  - .bundle
+  - .tmp-validation
+  - vendor
+  - node_modules
+  - docker-compose.yml
+  - Gemfile.lock
+
+markdown: kramdown
+highlighter: rouge
