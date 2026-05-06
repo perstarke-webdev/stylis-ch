@@ -1,5 +1,7 @@
 (function () {
   document.documentElement.classList.add('has-js');
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReducedMotion = () => motionQuery.matches;
   const body = document.body;
   const navToggle = document.querySelector('[data-nav-toggle]');
   const nav = document.querySelector('[data-site-nav]');
@@ -19,6 +21,61 @@
       }
     });
   }
+
+  const initReveals = () => {
+    const revealSelectors = [
+      '.trust-strip__inner',
+      '.section-head',
+      '.split__text',
+      '.split__figure',
+      '.service-card',
+      '.service-detail__copy',
+      '.benefit-panel',
+      '.case-card',
+      '.gallery-item',
+      '.press-card',
+      '.cta-band__inner',
+      '.contact-options',
+      '.contact-form',
+      '.legal-hero .shell',
+      '.text-flow',
+    ];
+    const revealElements = Array.from(document.querySelectorAll(revealSelectors.join(',')))
+      .filter((element) => !element.closest('.site-footer'));
+    if (!revealElements.length) return;
+
+    if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
+      revealElements.forEach((element) => element.classList.add('is-visible'));
+      return;
+    }
+
+    const groupedIndexes = new WeakMap();
+    revealElements.forEach((element) => {
+      const group = element.parentElement;
+      const index = groupedIndexes.get(group) || 0;
+      groupedIndexes.set(group, index + 1);
+      if (element.getBoundingClientRect().top < window.innerHeight * 1.15) {
+        element.classList.add('is-visible');
+        return;
+      }
+      element.style.setProperty('--reveal-delay', `${Math.min(index * 55, 220)}ms`);
+      element.classList.add('reveal-ready');
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px 22% 0px', threshold: 0.01 });
+
+    revealElements
+      .filter((element) => element.classList.contains('reveal-ready'))
+      .forEach((element) => observer.observe(element));
+  };
+
+  initReveals();
 
   document.querySelectorAll('[data-contact-form]').forEach((form) => {
     const status = form.querySelector('[data-form-status]');
@@ -73,6 +130,8 @@
   }
 
   const initBadgeOrbit = () => {
+    if (prefersReducedMotion()) return;
+
     const orbits = document.querySelectorAll('[data-badge-orbit]');
     if (!orbits.length) return;
 
