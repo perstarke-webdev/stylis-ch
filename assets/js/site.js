@@ -1,5 +1,6 @@
 (function () {
-  document.documentElement.classList.add('has-js');
+  const root = document.documentElement;
+  root.classList.add('has-js');
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const prefersReducedMotion = () => motionQuery.matches;
   const body = document.body;
@@ -42,24 +43,30 @@
     ];
     const revealElements = Array.from(document.querySelectorAll(revealSelectors.join(',')))
       .filter((element) => !element.closest('.site-footer'));
-    if (!revealElements.length) return;
+    if (!revealElements.length) {
+      root.classList.remove('reveal-prep');
+      return;
+    }
 
     if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
       revealElements.forEach((element) => element.classList.add('is-visible'));
+      root.classList.remove('reveal-prep');
       return;
     }
 
     const groupedIndexes = new WeakMap();
+    const immediateReveals = new WeakSet();
+    const revealNow = [];
     revealElements.forEach((element) => {
       const group = element.parentElement;
       const index = groupedIndexes.get(group) || 0;
       groupedIndexes.set(group, index + 1);
-      if (element.getBoundingClientRect().top < window.innerHeight * 1.15) {
-        element.classList.add('is-visible');
-        return;
-      }
-      element.style.setProperty('--reveal-delay', `${Math.min(index * 55, 220)}ms`);
+      element.style.setProperty('--reveal-delay', `${Math.min(index * 85, 340)}ms`);
       element.classList.add('reveal-ready');
+      if (element.getBoundingClientRect().top < window.innerHeight * 0.62) {
+        immediateReveals.add(element);
+        revealNow.push(element);
+      }
     });
 
     const observer = new IntersectionObserver((entries) => {
@@ -68,11 +75,19 @@
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       });
-    }, { rootMargin: '0px 0px 22% 0px', threshold: 0.01 });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+    if (revealNow.length) {
+      window.requestAnimationFrame(() => {
+        revealNow.forEach((element) => element.classList.add('is-visible'));
+      });
+    }
 
     revealElements
-      .filter((element) => element.classList.contains('reveal-ready'))
+      .filter((element) => element.classList.contains('reveal-ready') && !immediateReveals.has(element))
       .forEach((element) => observer.observe(element));
+
+    root.classList.remove('reveal-prep');
   };
 
   initReveals();
@@ -172,6 +187,8 @@
       let animationFrame = 0;
       let lastTimestamp = 0;
       let distance = 0;
+      let isVisible = false;
+      let isAnimating = false;
 
       const pointAt = (value) => {
         const normalized = ((value % total) + total) % total;
@@ -209,6 +226,7 @@
       };
 
       const tick = (timestamp) => {
+        if (!isAnimating) return;
         if (!lastTimestamp) lastTimestamp = timestamp;
         const elapsed = timestamp - lastTimestamp;
         lastTimestamp = timestamp;
@@ -218,10 +236,52 @@
         animationFrame = window.requestAnimationFrame(tick);
       };
 
+      const stop = () => {
+        if (animationFrame) window.cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+        lastTimestamp = 0;
+        isAnimating = false;
+      };
+
+      const shouldRun = () => isVisible && !document.hidden;
+
+      const start = () => {
+        if (isAnimating || !shouldRun()) return;
+        isAnimating = true;
+        animationFrame = window.requestAnimationFrame(tick);
+      };
+
+      const syncAnimation = () => {
+        if (shouldRun()) {
+          start();
+          return;
+        }
+        stop();
+      };
+
       orbit.classList.add('is-ready');
       draw(distance);
-      animationFrame = window.requestAnimationFrame(tick);
-      window.addEventListener('pagehide', () => window.cancelAnimationFrame(animationFrame), { once: true });
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            isVisible = entry.isIntersecting;
+            syncAnimation();
+          });
+        }, { threshold: 0.01 });
+        observer.observe(badge);
+        document.addEventListener('visibilitychange', syncAnimation);
+        window.addEventListener('pagehide', () => {
+          stop();
+          observer.disconnect();
+        }, { once: true });
+        return;
+      }
+
+      isVisible = true;
+      start();
+      document.addEventListener('visibilitychange', syncAnimation);
+      window.addEventListener('pagehide', stop, { once: true });
     });
   };
 

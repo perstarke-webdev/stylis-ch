@@ -6,6 +6,7 @@
   <script src="../assets/js/site-config.js"></script>
   <script>document.write('<meta name="robots" content="' + (window.STYLIS_SITE_CONFIG && window.STYLIS_SITE_CONFIG.noindex ? 'noindex,nofollow' : 'index,follow') + '">');</script>
   <noscript><meta name="robots" content="noindex,nofollow"></noscript>
+  <script>document.documentElement.classList.add("has-js", "reveal-prep"); window.setTimeout(function () { document.documentElement.classList.remove("reveal-prep"); }, 3000);</script>
   <title>Kontakt | stylisch Wohn- und Einrichtungsberatung Thalwil</title>
   <meta name="description" content="Kontakt zu stylisch Wohnberatung in Thalwil: Schreiben Sie mir per Formular, Telefon, E-Mail oder WhatsApp.">
   <link rel="canonical" href="https://www.stylis.ch/kontakt/">
@@ -39,7 +40,7 @@
 </header><main id="main">
 <!-- COMPONENT 1: Hero / image-led intro -->
 <section class="hero">
-  <div class="hero__media" aria-hidden="true"><img class="hero__image" src="../assets/images/site/kontakt-960.webp" srcset="../assets/images/site/kontakt-480.webp 480w, ../assets/images/site/kontakt-960.webp 960w" sizes="100vw" alt="" loading="eager" decoding="async"></div>
+  <div class="hero__media" aria-hidden="true"><img class="hero__image" src="../assets/images/site/kontakt-960.webp" srcset="../assets/images/site/kontakt-480.webp 480w, ../assets/images/site/kontakt-960.webp 960w" sizes="100vw" alt="" width="960" height="685" loading="eager" decoding="async" fetchpriority="high"></div>
   <div class="hero__shade" aria-hidden="true"></div>
   <div class="shell hero__content">
     <p class="eyebrow eyebrow--light">Kontakt</p>
@@ -99,14 +100,7 @@
 </section>
 <!-- /COMPONENT 9 -->
 
-<!-- COMPONENT 8: CTA band / next step -->
-<section class="cta-band">
-  <div class="shell cta-band__inner">
-    <div><p class="eyebrow eyebrow--light">Nächster Schritt</p><h2>Sie können auch einfach anrufen</h2><p>Manchmal ist ein kurzes Gespräch der beste Start. Ich freue mich auf Ihre Nachricht.</p></div>
-    <a class="button button--light" href="../kontakt/" >Kontakt aufnehmen<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
-  </div>
-</section>
-<!-- /COMPONENT 8 --></main>
+</main>
 <!-- COMPONENT 10: Footer / legal / KSWD badge -->
 <footer class="site-footer">
   <div class="shell site-footer__grid">
