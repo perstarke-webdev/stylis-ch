@@ -508,7 +508,7 @@ input:focus, textarea:focus, select:focus { background: var(--color-surface); bo
   .hero { min-height: clamp(560px, 70svh, 620px); align-items: end; }
   .hero--home { min-height: 640px; }
   .hero__shade { background: linear-gradient(180deg, rgb(var(--color-deep-rgb) / .14), rgb(var(--color-deep-rgb) / .52) 34%, rgb(var(--color-deep-rgb) / .82) 74%, rgb(var(--color-deep-rgb) / .88)); }
-  .hero__content { padding-block: 8rem 3.2rem; text-shadow: 0 2px 10px rgb(24 20 18 / .72), 0 12px 32px rgb(24 20 18 / .48); }
+  .hero__content { padding-block: clamp(6rem, 16vw, 7rem) 2.4rem; text-shadow: 0 2px 10px rgb(24 20 18 / .72), 0 12px 32px rgb(24 20 18 / .48); }
   .hero__content > * { max-width: 100%; }
   .hero h1 { max-width: 8.6em; }
   .case-card h3 { font-size: var(--text-h3); line-height: var(--leading-heading); }
