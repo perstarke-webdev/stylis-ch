@@ -77,8 +77,19 @@
 
   initReveals();
 
+  const fitTextareaToContent = (textarea) => {
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  };
+
   document.querySelectorAll('[data-contact-form]').forEach((form) => {
     const status = form.querySelector('[data-form-status]');
+    const textareas = Array.from(form.querySelectorAll('textarea'));
+    textareas.forEach((textarea) => {
+      fitTextareaToContent(textarea);
+      textarea.addEventListener('input', () => fitTextareaToContent(textarea));
+    });
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const required = Array.from(form.querySelectorAll('[required]'));
@@ -103,8 +114,9 @@
         return;
       }
       form.reset();
+      textareas.forEach((textarea) => fitTextareaToContent(textarea));
       form.classList.add('is-success');
-      if (status) status.textContent = 'Danke. Ihre Anfrage wurde erfasst. Ich melde mich bei Ihnen.';
+      if (status) status.textContent = 'Danke. Ihre Nachricht ist angekommen. Ich melde mich persönlich bei Ihnen.';
     });
   });
 
