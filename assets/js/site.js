@@ -64,7 +64,7 @@
       groupedIndexes.set(group, index + 1);
       element.style.setProperty('--reveal-delay', `${Math.min(index * 85, 340)}ms`);
       element.classList.add('reveal-ready');
-      if (element.getBoundingClientRect().top < window.innerHeight * 0.62) {
+      if (element.getBoundingClientRect().top < window.innerHeight * 0.96) {
         immediateReveals.add(element);
         revealNow.push(element);
       }
@@ -76,7 +76,7 @@
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    }, { rootMargin: '0px 0px 0px 0px', threshold: 0.08 });
 
     if (revealNow.length) {
       window.requestAnimationFrame(() => {
