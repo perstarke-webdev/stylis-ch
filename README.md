@@ -30,19 +30,25 @@ Set `noindex` to `false` for launch after the final domain, CMS, legal, and trac
 
 The frontend is plain HTML/CSS/JS. Jekyll/Docker are only used for local preview and GitHub Pages-style static serving; the templates themselves do not use Liquid, includes, layouts, front matter, or Jekyll data files.
 
-Final CMS content block count:
+Final estimated CMS content component count: **14**.
 
-1. Hero
+The component comments in the HTML use this stricter handoff logic:
+
+1. Image hero
 2. Trust strip
 3. Split story
-4. Service grid
-5. Service detail
-6. Case grid, including compact proof cards and full reference-story variants
-7. Media grid, including gallery, before/after comparison and press-card variants
-8. CTA band
-9. Contact block
-10. Legal text
+4. Service card grid
+5. Service detail with benefits
+6. Featured reference cards
+7. Reference story list
+8. Mixed media teaser grid
+9. Before-after comparison grid
+10. Press grid
+11. Inspiration gallery
+12. CTA band
+13. Contact block
+14. Legal page content
 
-Header and footer should be handled as global templates and are marked separately in the HTML. Background changes such as `section--tint`, reversed split layouts, 3- or 4-item trust strips, and home/subpage hero sizing are component variants, not separate components. Legal pages use one simple legal text component.
+This count intentionally treats visually different reference and media sections as separate CMS components. The compact reference cards on the start page, the full reference stories on the references page, the before-after cards, the press cards and the simple inspiration gallery are not labelled as one shared component because their layouts and content models are materially different. Header and footer should be handled as global templates and are marked separately in the HTML. Background changes such as `section--tint`, reversed split layouts, 3- or 4-item trust strips, home/subpage hero sizing, and shorter/longer item counts are component variants, not separate components. Redirect pages are legacy routing helpers and are not intended as CMS content components.
 
 The contact form currently shows a local success state only and does not submit to a third-party form backend; it is prepared for later CMS/AWS handling.
