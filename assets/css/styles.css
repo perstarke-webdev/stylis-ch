@@ -266,6 +266,10 @@ p { margin: 0; }
 .reference-story__media img { width: 100%; height: 100%; min-height: 160px; object-fit: cover; transition: transform 420ms var(--ease-out); }
 .reference-story__media img:first-child { grid-row: 1 / span 2; min-height: 320px; }
 .reference-story__media:hover img, .reference-story__media:focus-visible img { transform: scale(1.028); }
+@media (min-width: 861px) {
+  .reference-story:not(.reference-story--expanded) .reference-story__media { align-self: start; aspect-ratio: 1.08 / 1; min-height: 0; }
+  .reference-story:not(.reference-story--expanded) .reference-story__media img { min-height: 0; }
+}
 .reference-story__body { padding: clamp(1.15rem, 2.6vw, 1.85rem); display: grid; gap: .55rem; align-content: center; }
 .reference-story--text-only .reference-story__body { padding-block: clamp(1.25rem, 2.8vw, 2rem); }
 .reference-story__meta { order: 1; color: var(--color-muted); font-size: var(--text-caption); font-weight: var(--weight-bold); line-height: 1.22; text-transform: uppercase; letter-spacing: 0; }

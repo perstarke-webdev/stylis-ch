@@ -132,6 +132,16 @@
     setActive(index);
   });
 
+  document.querySelectorAll('.reference-story__more').forEach((details) => {
+    const story = details.closest('.reference-story');
+    if (!story) return;
+    const syncExpandedState = () => {
+      story.classList.toggle('reference-story--expanded', details.open);
+    };
+    syncExpandedState();
+    details.addEventListener('toggle', syncExpandedState);
+  });
+
   const fitTextareaToContent = (textarea) => {
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
