@@ -209,7 +209,7 @@
   });
 
   const lightboxButtons = document.querySelectorAll('[data-lightbox], [data-lightbox-gallery]');
-  const overviewButtons = document.querySelectorAll('[data-gallery-overview]');
+  const overviewButtons = document.querySelectorAll('[data-gallery-overview], [data-gallery-overview-url]');
   if (lightboxButtons.length || overviewButtons.length) {
     const dialog = document.createElement('dialog');
     dialog.className = 'lightbox';
@@ -331,26 +331,52 @@
       const renderOverview = (items) => {
         overviewItems = items;
         overviewGrid.innerHTML = items.map((item, itemIndex) => [
-          `<button type="button" class="gallery-overview-card" data-gallery-index="${itemIndex}">`,
-          `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || item.caption)}" loading="lazy" decoding="async">`,
+          `<div class="gallery-overview-card" role="button" tabindex="0" data-gallery-index="${itemIndex}">`,
+          `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || item.caption)}" loading="eager" decoding="async">`,
           `<strong>${escapeHtml(item.tag || '')}</strong>`,
           `<span>${escapeHtml(item.caption || item.alt || '')}</span>`,
-          '</button>',
+          '</div>',
         ].join('')).join('');
+      };
+
+      const getOverviewItems = (button) => {
+        if (button.dataset.galleryOverviewUrl) {
+          return fetch(button.dataset.galleryOverviewUrl)
+            .then((response) => {
+              if (!response.ok) throw new Error('Gallery overview could not be loaded');
+              return response.json();
+            })
+            .then((items) => (Array.isArray(items) ? items : []))
+            .catch(() => []);
+        }
+        return Promise.resolve(parseItems(button.dataset.galleryOverview || '[]'));
       };
 
       overviewButtons.forEach((button) => {
         button.addEventListener('click', () => {
-          const items = parseItems(button.dataset.galleryOverview || '[]');
-          if (!items.length) return;
-          renderOverview(items);
-          overviewDialog.showModal();
-          overviewClose.focus({ preventScroll: true });
+          const originalLabel = button.innerHTML;
+          button.disabled = true;
+          getOverviewItems(button).then((items) => {
+            button.disabled = false;
+            button.innerHTML = originalLabel;
+            if (!items.length) return;
+            renderOverview(items);
+            overviewDialog.showModal();
+            overviewClose.focus({ preventScroll: true });
+          });
         });
       });
       overviewGrid.addEventListener('click', (event) => {
         const card = event.target.closest('[data-gallery-index]');
         if (!card) return;
+        overviewDialog.close();
+        openLightbox(overviewItems, Number(card.dataset.galleryIndex) || 0);
+      });
+      overviewGrid.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        const card = event.target.closest('[data-gallery-index]');
+        if (!card) return;
+        event.preventDefault();
         overviewDialog.close();
         openLightbox(overviewItems, Number(card.dataset.galleryIndex) || 0);
       });
