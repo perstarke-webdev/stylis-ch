@@ -294,13 +294,13 @@
     dialog.className = 'lightbox';
     dialog.innerHTML = [
       '<div class="lightbox__frame">',
-      '<button type="button" class="lightbox__close" aria-label="Ansicht schliessen">×</button>',
-      '<button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Vorheriges Bild">‹</button>',
+      '<button type="button" class="lightbox__close" aria-label="Ansicht schliessen"><span class="control-icon control-icon--close" aria-hidden="true"></span></button>',
+      '<button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Vorheriges Bild"><span class="control-icon control-icon--prev" aria-hidden="true"></span></button>',
       '<figure class="lightbox__figure">',
       '<img alt="">',
       '<figcaption class="lightbox__caption"><span data-lightbox-caption></span><span class="lightbox__counter" data-lightbox-counter></span></figcaption>',
       '</figure>',
-      '<button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Nächstes Bild">›</button>',
+      '<button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Nächstes Bild"><span class="control-icon control-icon--next" aria-hidden="true"></span></button>',
       '</div>',
     ].join('');
     document.body.appendChild(dialog);
@@ -391,7 +391,7 @@
         '<div class="gallery-overview__shell">',
         '<div class="gallery-overview__head">',
         '<div><h2>Alle Vorher-Nachher-Bilder</h2><p>Übersicht öffnen, durchscrollen und einzelne Bilder gross ansehen.</p></div>',
-        '<button type="button" class="gallery-overview__close" aria-label="Galerie schliessen">×</button>',
+        '<button type="button" class="gallery-overview__close" aria-label="Galerie schliessen"><span class="control-icon control-icon--close" aria-hidden="true"></span></button>',
         '</div>',
         '<div class="gallery-overview__grid" data-gallery-overview-grid></div>',
         '</div>',
