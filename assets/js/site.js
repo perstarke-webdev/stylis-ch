@@ -135,11 +135,22 @@
   document.querySelectorAll('.reference-story__more').forEach((details) => {
     const story = details.closest('.reference-story');
     if (!story) return;
+    let hasToggled = false;
     const syncExpandedState = () => {
       story.classList.toggle('reference-story--expanded', details.open);
+      if (hasToggled && !details.open) {
+        story.style.display = 'block';
+        story.offsetHeight;
+        window.requestAnimationFrame(() => {
+          story.style.display = '';
+        });
+      }
     };
     syncExpandedState();
-    details.addEventListener('toggle', syncExpandedState);
+    details.addEventListener('toggle', () => {
+      hasToggled = true;
+      syncExpandedState();
+    });
   });
 
   const fitTextareaToContent = (textarea) => {
