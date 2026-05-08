@@ -27,6 +27,10 @@
     const revealSelectors = [
       '.trust-strip__inner',
       '.section-head',
+      '.proof-editorial__copy',
+      '.value-thread li',
+      '.testimonial-slider',
+      '.proof-link-card',
       '.split__text',
       '.split__figure',
       '.service-card',
@@ -35,6 +39,7 @@
       '.case-card',
       '.reference-story',
       '.gallery-item',
+      '.gallery-overview-card',
       '.press-card',
       '.cta-band__inner',
       '.contact-options',
@@ -93,6 +98,40 @@
 
   initReveals();
 
+  document.querySelectorAll('[data-testimonial-slider]').forEach((slider) => {
+    const slides = Array.from(slider.querySelectorAll('.testimonial-slide'));
+    const dots = Array.from(slider.querySelectorAll('.testimonial-slider__controls button'));
+    if (slides.length < 2 || dots.length !== slides.length) return;
+    let index = Math.max(0, slides.findIndex((slide) => slide.classList.contains('is-active')));
+    let touchStartX = 0;
+
+    const setActive = (nextIndex) => {
+      index = (nextIndex + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === index;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', String(!isActive));
+      });
+      dots.forEach((dot, dotIndex) => {
+        dot.classList.toggle('is-active', dotIndex === index);
+        dot.setAttribute('aria-pressed', String(dotIndex === index));
+      });
+    };
+
+    dots.forEach((dot, dotIndex) => {
+      dot.addEventListener('click', () => setActive(dotIndex));
+    });
+    slider.addEventListener('touchstart', (event) => {
+      touchStartX = event.changedTouches[0].clientX;
+    }, { passive: true });
+    slider.addEventListener('touchend', (event) => {
+      const deltaX = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(deltaX) < 38) return;
+      setActive(index + (deltaX > 0 ? -1 : 1));
+    }, { passive: true });
+    setActive(index);
+  });
+
   const fitTextareaToContent = (textarea) => {
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
@@ -100,6 +139,11 @@
 
   document.querySelectorAll('[data-contact-form]').forEach((form) => {
     const status = form.querySelector('[data-form-status]');
+    const button = form.querySelector('button[type="submit"]');
+    const submitLabel = button ? button.getAttribute('data-submit-label') || button.textContent.trim() : '';
+    const loadingLabel = button ? button.getAttribute('data-loading-label') || 'Nachricht wird gesendet ...' : '';
+    const successLabel = button ? button.getAttribute('data-success-label') || 'Nachricht gesendet' : '';
+    const buttonContent = button ? button.innerHTML : '';
     const textareas = Array.from(form.querySelectorAll('textarea'));
     textareas.forEach((textarea) => {
       fitTextareaToContent(textarea);
@@ -129,15 +173,44 @@
         emailField.focus();
         return;
       }
-      form.reset();
-      textareas.forEach((textarea) => fitTextareaToContent(textarea));
-      form.classList.add('is-success');
-      if (status) status.textContent = 'Danke. Ihre Nachricht ist angekommen. Ich melde mich persönlich bei Ihnen.';
+      if (!form.action || !button) return;
+
+      button.disabled = true;
+      button.textContent = loadingLabel;
+      if (status) status.textContent = 'Ihre Nachricht wird gesendet ...';
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      })
+        .then((response) => {
+          if (!response.ok) throw new Error('Formspark request failed');
+          form.reset();
+          textareas.forEach((textarea) => fitTextareaToContent(textarea));
+          form.classList.add('is-success');
+          button.textContent = successLabel;
+          if (status) status.textContent = 'Danke. Ihre Nachricht ist angekommen. Ich melde mich persönlich bei Ihnen.';
+        })
+        .catch(() => {
+          form.classList.add('is-error');
+          button.innerHTML = buttonContent;
+          if (status) status.textContent = 'Das Senden hat gerade nicht geklappt. Bitte schreiben Sie per WhatsApp oder E-Mail.';
+        })
+        .finally(() => {
+          window.setTimeout(() => {
+            button.disabled = false;
+            if (button.textContent === successLabel || button.textContent === submitLabel || button.textContent === loadingLabel) {
+              button.innerHTML = buttonContent;
+            }
+          }, 1800);
+        });
     });
   });
 
   const lightboxButtons = document.querySelectorAll('[data-lightbox], [data-lightbox-gallery]');
-  if (lightboxButtons.length) {
+  const overviewButtons = document.querySelectorAll('[data-gallery-overview]');
+  if (lightboxButtons.length || overviewButtons.length) {
     const dialog = document.createElement('dialog');
     dialog.className = 'lightbox';
     dialog.innerHTML = [
@@ -162,14 +235,19 @@
     let galleryIndex = 0;
     let touchStartX = 0;
 
+    const parseItems = (value) => {
+      try {
+        const items = JSON.parse(value);
+        if (Array.isArray(items) && items.length) return items;
+      } catch (error) {
+        return [];
+      }
+      return [];
+    };
+
     const parseGallery = (button) => {
       if (button.dataset.lightboxGallery) {
-        try {
-          const items = JSON.parse(button.dataset.lightboxGallery);
-          if (Array.isArray(items) && items.length) return items;
-        } catch (error) {
-          return [];
-        }
+        return parseItems(button.dataset.lightboxGallery);
       }
       if (!button.dataset.lightbox) return [];
       return [{ src: button.dataset.lightbox, alt: button.dataset.lightboxAlt || '', caption: button.dataset.lightboxAlt || '' }];
@@ -193,13 +271,18 @@
       renderLightbox();
     };
 
+    const openLightbox = (items, startIndex) => {
+      if (!items.length) return;
+      gallery = items;
+      galleryIndex = Math.max(0, Math.min(startIndex || 0, gallery.length - 1));
+      renderLightbox();
+      dialog.showModal();
+      close.focus({ preventScroll: true });
+    };
+
     lightboxButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        gallery = parseGallery(button);
-        galleryIndex = 0;
-        renderLightbox();
-        dialog.showModal();
-        close.focus({ preventScroll: true });
+        openLightbox(parseGallery(button), 0);
       });
     });
     close.addEventListener('click', () => dialog.close());
@@ -221,6 +304,61 @@
       if (event.key === 'ArrowLeft') moveLightbox(-1);
       if (event.key === 'ArrowRight') moveLightbox(1);
     });
+
+    if (overviewButtons.length) {
+      const overviewDialog = document.createElement('dialog');
+      overviewDialog.className = 'gallery-overview';
+      overviewDialog.innerHTML = [
+        '<div class="gallery-overview__shell">',
+        '<div class="gallery-overview__head">',
+        '<div><h2>Alle Vorher-Nachher-Bilder</h2><p>Übersicht öffnen, durchscrollen und einzelne Bilder gross ansehen.</p></div>',
+        '<button type="button" class="gallery-overview__close" aria-label="Galerie schliessen">×</button>',
+        '</div>',
+        '<div class="gallery-overview__grid" data-gallery-overview-grid></div>',
+        '</div>',
+      ].join('');
+      document.body.appendChild(overviewDialog);
+      const overviewClose = overviewDialog.querySelector('.gallery-overview__close');
+      const overviewGrid = overviewDialog.querySelector('[data-gallery-overview-grid]');
+      let overviewItems = [];
+
+      const escapeHtml = (value) => String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+
+      const renderOverview = (items) => {
+        overviewItems = items;
+        overviewGrid.innerHTML = items.map((item, itemIndex) => [
+          `<button type="button" class="gallery-overview-card" data-gallery-index="${itemIndex}">`,
+          `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || item.caption)}" loading="lazy" decoding="async">`,
+          `<strong>${escapeHtml(item.tag || '')}</strong>`,
+          `<span>${escapeHtml(item.caption || item.alt || '')}</span>`,
+          '</button>',
+        ].join('')).join('');
+      };
+
+      overviewButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const items = parseItems(button.dataset.galleryOverview || '[]');
+          if (!items.length) return;
+          renderOverview(items);
+          overviewDialog.showModal();
+          overviewClose.focus({ preventScroll: true });
+        });
+      });
+      overviewGrid.addEventListener('click', (event) => {
+        const card = event.target.closest('[data-gallery-index]');
+        if (!card) return;
+        overviewDialog.close();
+        openLightbox(overviewItems, Number(card.dataset.galleryIndex) || 0);
+      });
+      overviewClose.addEventListener('click', () => overviewDialog.close());
+      overviewDialog.addEventListener('click', (event) => {
+        if (event.target === overviewDialog) overviewDialog.close();
+      });
+    }
   }
 
   const initBadgeOrbit = () => {
