@@ -137,8 +137,54 @@
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
+  const submitFormsparkPayload = (endpoint, payload) => {
+    const formData = new URLSearchParams();
+    Object.keys(payload).forEach((key) => {
+      if (payload[key] !== '') {
+        formData.append(key, payload[key]);
+      }
+    });
+
+    return fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData.toString(),
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error('Formspark request failed');
+      }
+      return response.text();
+    });
+  };
+
+  const refreshFormGuard = (form) => {
+    form.setAttribute('data-form-started-at', String(Date.now()));
+  };
+
+  const getHoneypotValue = (form) => {
+    const field = form.querySelector("input[name='_honeypot']");
+    return field ? (field.value || '').trim() : '';
+  };
+
+  const isFormSubmittedTooFast = (form) => {
+    const startedAt = parseInt(form.getAttribute('data-form-started-at') || '', 10);
+    const minSubmitMs = parseInt(form.getAttribute('data-form-min-submit-ms') || '', 10);
+
+    if (Number.isNaN(startedAt) || Number.isNaN(minSubmitMs)) {
+      return false;
+    }
+
+    return Date.now() - startedAt < minSubmitMs;
+  };
+
   document.querySelectorAll('[data-contact-form]').forEach((form) => {
+    refreshFormGuard(form);
+    const endpoint = form.getAttribute('data-form-endpoint') || '';
     const status = form.querySelector('[data-form-status]');
+    const success = form.querySelector('[data-form-success]');
     const button = form.querySelector('button[type="submit"]');
     const submitLabel = button ? button.getAttribute('data-submit-label') || button.textContent.trim() : '';
     const loadingLabel = button ? button.getAttribute('data-loading-label') || 'Nachricht wird gesendet ...' : '';
@@ -156,7 +202,21 @@
       const missing = required.filter((field) => !field.value.trim());
       const emailField = form.querySelector('input[type="email"]');
       form.classList.remove('is-success', 'is-error');
+      if (success) success.hidden = true;
+      if (status) status.textContent = '';
       required.forEach((field) => field.removeAttribute('aria-invalid'));
+      if (getHoneypotValue(form)) {
+        form.reset();
+        textareas.forEach((textarea) => fitTextareaToContent(textarea));
+        refreshFormGuard(form);
+        if (success) success.hidden = false;
+        return;
+      }
+      if (isFormSubmittedTooFast(form)) {
+        form.classList.add('is-error');
+        if (status) status.textContent = 'Bitte warten Sie einen Moment und senden Sie das Formular erneut.';
+        return;
+      }
       if (missing.length) {
         missing.forEach((field) => field.setAttribute('aria-invalid', 'true'));
         form.classList.add('is-error');
@@ -173,24 +233,33 @@
         emailField.focus();
         return;
       }
-      if (!form.action || !button) return;
+      if (!endpoint || !button) {
+        form.classList.add('is-error');
+        if (status) status.textContent = 'Das Formular ist noch nicht vollständig verbunden. Bitte schreiben Sie per WhatsApp oder E-Mail.';
+        return;
+      }
+
+      const payload = {};
+      new FormData(form).forEach((value, key) => {
+        if (key !== '_honeypot') {
+          payload[key] = typeof value === 'string' ? value.trim() : value;
+        }
+      });
+      payload.submittedAt = new Date().toISOString();
 
       button.disabled = true;
       button.textContent = loadingLabel;
       if (status) status.textContent = 'Ihre Nachricht wird gesendet ...';
 
-      fetch(form.action, {
-        method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: new FormData(form),
-      })
+      submitFormsparkPayload(endpoint, payload)
         .then((response) => {
-          if (!response.ok) throw new Error('Formspark request failed');
           form.reset();
           textareas.forEach((textarea) => fitTextareaToContent(textarea));
+          refreshFormGuard(form);
           form.classList.add('is-success');
           button.textContent = successLabel;
-          if (status) status.textContent = 'Danke. Ihre Nachricht ist angekommen. Ich melde mich persönlich bei Ihnen.';
+          if (status) status.textContent = '';
+          if (success) success.hidden = false;
         })
         .catch(() => {
           form.classList.add('is-error');

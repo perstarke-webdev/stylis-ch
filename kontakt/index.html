@@ -85,8 +85,13 @@
       </address>
       <p class="english-note">English speaking clients are more than welcome too.</p>
     </div>
-    <form class="contact-form" data-contact-form action="https://submit-form.com/qmOOtdX2O" method="POST" novalidate>
+    <form class="contact-form" data-contact-form data-form-mode="formspark" data-form-endpoint="https://submit-form.com/qmOOtdX2O" data-form-context="contact-page" data-form-min-submit-ms="1800" action="https://submit-form.com/qmOOtdX2O" method="POST" novalidate>
       <input type="hidden" name="_subject" value="Neue Anfrage über stylis.ch">
+      <input type="hidden" name="source" value="contact-page">
+      <div class="form-honeypot" aria-hidden="true">
+        <label for="company">Bitte dieses Feld leer lassen</label>
+        <input id="company" name="_honeypot" type="text" tabindex="-1" autocomplete="off">
+      </div>
       <div class="form-row"><label for="name">Ihr Name</label><input id="name" name="name" autocomplete="name" required></div>
       <div class="form-row form-row--split"><div><label for="email">E-Mail-Adresse</label><input id="email" name="email" type="email" autocomplete="email" required></div><div><label for="phone">Telefonnummer <span>optional</span></label><input id="phone" name="phone" autocomplete="tel"></div></div>
       <div class="form-row form-row--split"><div><label for="region">Ort oder Region <span>optional</span></label><input id="region" name="region" autocomplete="address-level2"></div><div><label for="topic">Wobei wünschen Sie Unterstützung?</label><select id="topic" name="topic"><option>Noch unsicher</option><option>Soforthilfe</option><option>Shoppingberatung</option><option>Gesamtkonzept</option><option>Umzugsberatung</option><option>Neu- oder Umbauberatung</option><option>Farbberatung</option><option>Ordnungscoaching</option></select></div></div>
@@ -94,6 +99,7 @@
       <div class="form-row"><label for="heard">Wie sind Sie auf stylisch aufmerksam geworden? <span>optional</span></label><input id="heard" name="heard_from" autocomplete="off"></div>
       <p class="form-note">Mit dem Senden akzeptieren Sie die <a href="../datenschutz/">Datenschutzerklärung</a>. Ihre Angaben werden über Formspark zur Bearbeitung der Anfrage weitergeleitet.</p>
       <button class="button button--primary" type="submit" data-submit-label="Nachricht senden" data-loading-label="Nachricht wird gesendet ..." data-success-label="Nachricht gesendet">Nachricht senden<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+      <p class="form-success" hidden data-form-success>Danke. Ihre Nachricht ist angekommen. Ich melde mich persönlich bei Ihnen.</p>
       <p class="form-status" data-form-status aria-live="polite"></p>
     </form>
   </div>
