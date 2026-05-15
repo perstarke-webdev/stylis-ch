@@ -100,9 +100,12 @@
 
   document.querySelectorAll('[data-testimonial-slider]').forEach((slider) => {
     const slides = Array.from(slider.querySelectorAll('.testimonial-slide'));
-    const dots = Array.from(slider.querySelectorAll('.testimonial-slider__controls button'));
+    const dots = Array.from(slider.querySelectorAll('.testimonial-slider__dot'));
+    const previous = slider.querySelector('[data-testimonial-prev]');
+    const next = slider.querySelector('[data-testimonial-next]');
     if (slides.length < 2 || dots.length !== slides.length) return;
     let index = Math.max(0, slides.findIndex((slide) => slide.classList.contains('is-active')));
+    let timer = 0;
     let touchStartX = 0;
 
     const setActive = (nextIndex) => {
@@ -118,31 +121,80 @@
       });
     };
 
+    const stop = () => {
+      if (timer) window.clearInterval(timer);
+      timer = 0;
+    };
+
+    const start = () => {
+      if (timer || document.hidden) return;
+      timer = window.setInterval(() => setActive(index + 1), 6200);
+    };
+
+    const restart = () => {
+      stop();
+      start();
+    };
+
     dots.forEach((dot, dotIndex) => {
-      dot.addEventListener('click', () => setActive(dotIndex));
+      dot.addEventListener('click', () => {
+        setActive(dotIndex);
+        restart();
+      });
     });
+    if (previous) {
+      previous.addEventListener('click', () => {
+        setActive(index - 1);
+        restart();
+      });
+    }
+    if (next) {
+      next.addEventListener('click', () => {
+        setActive(index + 1);
+        restart();
+      });
+    }
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', start);
+    slider.addEventListener('focusin', stop);
+    slider.addEventListener('focusout', start);
     slider.addEventListener('touchstart', (event) => {
       touchStartX = event.changedTouches[0].clientX;
+      stop();
     }, { passive: true });
     slider.addEventListener('touchend', (event) => {
       const deltaX = event.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(deltaX) < 38) return;
-      setActive(index + (deltaX > 0 ? -1 : 1));
+      if (Math.abs(deltaX) >= 38) setActive(index + (deltaX > 0 ? -1 : 1));
+      start();
     }, { passive: true });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stop();
+        return;
+      }
+      start();
+    });
     setActive(index);
+    start();
   });
 
   document.querySelectorAll('.reference-story__more').forEach((details) => {
     const story = details.closest('.reference-story');
     if (!story) return;
+    const collapsibleContent = Array.from(details.children).filter((child) => child.tagName.toLowerCase() !== 'summary');
     let hasToggled = false;
     const syncExpandedState = () => {
       story.classList.toggle('reference-story--expanded', details.open);
+      collapsibleContent.forEach((child) => {
+        child.hidden = !details.open;
+      });
       if (hasToggled && !details.open) {
+        details.style.height = `${details.querySelector('summary')?.offsetHeight || 44}px`;
         story.style.display = 'block';
         story.offsetHeight;
         window.requestAnimationFrame(() => {
           story.style.display = '';
+          details.style.height = '';
         });
       }
     };
@@ -372,7 +424,8 @@
 
     lightboxButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        openLightbox(parseGallery(button), 0);
+        const startIndex = Number.parseInt(button.dataset.lightboxStart || '0', 10);
+        openLightbox(parseGallery(button), Number.isNaN(startIndex) ? 0 : startIndex);
       });
     });
     close.addEventListener('click', () => dialog.close());
@@ -420,9 +473,12 @@
 
       const renderOverview = (items) => {
         overviewItems = items;
-        overviewGrid.innerHTML = items.map((item, itemIndex) => [
-          `<div class="gallery-overview-card" role="button" tabindex="0" data-gallery-index="${itemIndex}">`,
-          `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || item.caption)}" loading="eager" decoding="async">`,
+        const cards = items
+          .map((item, itemIndex) => ({ ...item, sourceIndex: itemIndex }))
+          .filter((item) => String(item.tag || '').toUpperCase() !== 'VORHER');
+        overviewGrid.innerHTML = cards.map((item) => [
+          `<div class="gallery-overview-card" role="button" tabindex="0" data-gallery-index="${item.sourceIndex}">`,
+          `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || item.caption)}" loading="lazy" decoding="async">`,
           `<strong>${escapeHtml(item.tag || '')}</strong>`,
           `<span>${escapeHtml(item.caption || item.alt || '')}</span>`,
           '</div>',
@@ -478,8 +534,6 @@
   }
 
   const initBadgeOrbit = () => {
-    if (prefersReducedMotion()) return;
-
     const orbits = document.querySelectorAll('[data-badge-orbit]');
     if (!orbits.length) return;
 
@@ -508,8 +562,6 @@
       let animationFrame = 0;
       let lastTimestamp = 0;
       let distance = 0;
-      let isVisible = false;
-      let isAnimating = false;
 
       const pointAt = (value) => {
         const normalized = ((value % total) + total) % total;
@@ -543,66 +595,37 @@
         const state = getMotionState(value);
         traces[0].setAttribute('d', buildTrace(value, state.length));
         traces[1].setAttribute('d', buildTrace(value + total / 2, state.length));
-        traces.forEach((trace) => { trace.style.opacity = String(state.opacity); });
+        traces.forEach((trace) => { trace.style.opacity = state.opacity.toFixed(3); });
       };
 
       const tick = (timestamp) => {
-        if (!isAnimating) return;
         if (!lastTimestamp) lastTimestamp = timestamp;
         const elapsed = timestamp - lastTimestamp;
-        lastTimestamp = timestamp;
         const state = getMotionState(distance);
         distance = (distance + (elapsed / duration) * total * state.speed) % total;
         draw(distance);
+        lastTimestamp = timestamp;
         animationFrame = window.requestAnimationFrame(tick);
       };
 
-      const stop = () => {
-        if (animationFrame) window.cancelAnimationFrame(animationFrame);
-        animationFrame = 0;
-        lastTimestamp = 0;
-        isAnimating = false;
-      };
+      draw(distance);
+      orbit.classList.add('is-ready');
 
-      const shouldRun = () => isVisible && !document.hidden;
+      if (prefersReducedMotion()) return;
 
-      const start = () => {
-        if (isAnimating || !shouldRun()) return;
-        isAnimating = true;
-        animationFrame = window.requestAnimationFrame(tick);
-      };
+      animationFrame = window.requestAnimationFrame(tick);
 
-      const syncAnimation = () => {
-        if (shouldRun()) {
-          start();
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && animationFrame) {
+          window.cancelAnimationFrame(animationFrame);
+          animationFrame = 0;
           return;
         }
-        stop();
-      };
-
-      orbit.classList.add('is-ready');
-      draw(distance);
-
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            isVisible = entry.isIntersecting;
-            syncAnimation();
-          });
-        }, { threshold: 0.01 });
-        observer.observe(badge);
-        document.addEventListener('visibilitychange', syncAnimation);
-        window.addEventListener('pagehide', () => {
-          stop();
-          observer.disconnect();
-        }, { once: true });
-        return;
-      }
-
-      isVisible = true;
-      start();
-      document.addEventListener('visibilitychange', syncAnimation);
-      window.addEventListener('pagehide', stop, { once: true });
+        if (!document.hidden && !animationFrame) {
+          lastTimestamp = 0;
+          animationFrame = window.requestAnimationFrame(tick);
+        }
+      });
     });
   };
 
