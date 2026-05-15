@@ -2,7 +2,7 @@ locale: "de-CH"
 lang: "de-CH"
 title: "stylisch Wohnberatung"
 description: "Wohn- und Einrichtungsberatung in der deutschsprachigen Schweiz mit Caroline Stupf."
-url: "https://www.stylis.ch"
+url: "https://stylis-ch.kswd-draft.ch"
 baseurl: ""
 timezone: Europe/Zurich
 noindex_site: true
