@@ -7,6 +7,10 @@
   const navToggle = document.querySelector('[data-nav-toggle]');
   const nav = document.querySelector('[data-site-nav]');
 
+  document.querySelectorAll('[data-current-year]').forEach((element) => {
+    element.textContent = `${new Date().getFullYear()} `;
+  });
+
   if (navToggle && nav) {
     navToggle.addEventListener('click', () => {
       const expanded = navToggle.getAttribute('aria-expanded') === 'true';
