@@ -43,6 +43,9 @@
       '.case-card',
       '.reference-story',
       '.gallery-item',
+      '.faq-item',
+      '.testimonial-showcase__copy',
+      '.testimonial-showcase__media',
       '.gallery-overview-card',
       '.press-card',
       '.cta-band__inner',
@@ -180,6 +183,18 @@
     });
     setActive(index);
     start();
+  });
+
+  document.querySelectorAll('[data-comparison-slider]').forEach((slider) => {
+    const range = slider.querySelector('.comparison-card__range');
+    if (!range) return;
+    const sync = () => {
+      const value = Math.max(Number(range.min) || 0, Math.min(Number(range.max) || 100, Number(range.value) || 67));
+      slider.style.setProperty('--comparison-split', `${value}%`);
+    };
+    range.addEventListener('input', sync);
+    range.addEventListener('change', sync);
+    sync();
   });
 
   document.querySelectorAll('.reference-story__more').forEach((details) => {
@@ -426,7 +441,65 @@
       close.focus({ preventScroll: true });
     };
 
+    document.querySelectorAll('[data-comparison-slider][data-lightbox-gallery]').forEach((slider) => {
+      const range = slider.querySelector('.comparison-card__range');
+      const handle = slider.querySelector('.comparison-card__handle');
+      let pointerId = null;
+
+      const syncFromPoint = (clientX) => {
+        if (!range) return;
+        const rect = slider.getBoundingClientRect();
+        if (!rect.width) return;
+        const percent = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+        range.value = `${percent}`;
+        slider.style.setProperty('--comparison-split', `${percent}%`);
+      };
+
+      const stopDrag = (event) => {
+        if (pointerId !== event.pointerId) return;
+        event.preventDefault();
+        event.stopPropagation();
+        handle?.releasePointerCapture?.(pointerId);
+        pointerId = null;
+        slider.classList.remove('is-dragging');
+      };
+
+      handle?.addEventListener('pointerdown', (event) => {
+        if (event.button !== undefined && event.button !== 0) return;
+        event.preventDefault();
+        event.stopPropagation();
+        pointerId = event.pointerId;
+        slider.classList.add('is-dragging');
+        handle.setPointerCapture?.(pointerId);
+      });
+
+      handle?.addEventListener('pointermove', (event) => {
+        if (pointerId !== event.pointerId) return;
+        event.preventDefault();
+        event.stopPropagation();
+        syncFromPoint(event.clientX);
+      });
+
+      handle?.addEventListener('pointerup', stopDrag);
+      handle?.addEventListener('pointercancel', stopDrag);
+      handle?.addEventListener('lostpointercapture', () => {
+        pointerId = null;
+        slider.classList.remove('is-dragging');
+      });
+      handle?.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      });
+
+      slider.addEventListener('click', (event) => {
+        if (event.target.closest('.comparison-card__handle')) return;
+        event.stopPropagation();
+        openLightbox(parseGallery(slider), 0);
+      });
+    });
+
     lightboxButtons.forEach((button) => {
+      if (button.matches('[data-comparison-slider]')) return;
       button.addEventListener('click', () => {
         const startIndex = Number.parseInt(button.dataset.lightboxStart || '0', 10);
         openLightbox(parseGallery(button), Number.isNaN(startIndex) ? 0 : startIndex);
