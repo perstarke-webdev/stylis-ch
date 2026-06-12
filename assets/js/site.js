@@ -30,6 +30,7 @@
   const initReveals = () => {
     const revealSelectors = [
       '.trust-strip__inner',
+      '.intro-statement__inner',
       '.section-head',
       '.proof-editorial__copy',
       '.value-thread li',
@@ -105,6 +106,26 @@
 
   initReveals();
 
+  const syncTestimonialShowcases = () => {
+    const isStacked = window.matchMedia('(max-width: 980px)').matches;
+    document.querySelectorAll('.testimonial-showcase__grid').forEach((grid) => {
+      const copy = grid.querySelector('.testimonial-showcase__copy');
+      if (!copy || isStacked) {
+        grid.style.removeProperty('--testimonial-media-height');
+        return;
+      }
+      const height = Math.ceil(copy.getBoundingClientRect().height);
+      if (height > 0) grid.style.setProperty('--testimonial-media-height', `${height}px`);
+    });
+  };
+
+  syncTestimonialShowcases();
+  window.addEventListener('resize', () => window.requestAnimationFrame(syncTestimonialShowcases), { passive: true });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(syncTestimonialShowcases).catch(() => {});
+  }
+  window.addEventListener('load', syncTestimonialShowcases, { once: true });
+
   document.querySelectorAll('[data-testimonial-slider]').forEach((slider) => {
     const slides = Array.from(slider.querySelectorAll('.testimonial-slide'));
     const dots = Array.from(slider.querySelectorAll('.testimonial-slider__dot'));
@@ -114,6 +135,7 @@
     let index = Math.max(0, slides.findIndex((slide) => slide.classList.contains('is-active')));
     let timer = 0;
     let touchStartX = 0;
+    const interval = Number(slider.dataset.testimonialInterval) || 6200;
 
     const setActive = (nextIndex) => {
       index = (nextIndex + slides.length) % slides.length;
@@ -129,13 +151,17 @@
     };
 
     const stop = () => {
-      if (timer) window.clearInterval(timer);
+      if (timer) window.clearTimeout(timer);
       timer = 0;
     };
 
     const start = () => {
       if (timer || document.hidden) return;
-      timer = window.setInterval(() => setActive(index + 1), 6200);
+      timer = window.setTimeout(() => {
+        timer = 0;
+        setActive(index + 1);
+        start();
+      }, interval);
     };
 
     const restart = () => {
@@ -161,10 +187,6 @@
         restart();
       });
     }
-    slider.addEventListener('mouseenter', stop);
-    slider.addEventListener('mouseleave', start);
-    slider.addEventListener('focusin', stop);
-    slider.addEventListener('focusout', start);
     slider.addEventListener('touchstart', (event) => {
       touchStartX = event.changedTouches[0].clientX;
       stop();
@@ -221,6 +243,74 @@
     details.addEventListener('toggle', () => {
       hasToggled = true;
       syncExpandedState();
+    });
+  });
+
+  document.querySelectorAll('.faq-item').forEach((item) => {
+    const trigger = item.querySelector('.faq-item__trigger');
+    const panel = item.querySelector('.faq-item__panel');
+    if (!trigger || !panel) return;
+    let timer = 0;
+    let transitionId = 0;
+
+    const complete = (isOpen) => {
+      window.clearTimeout(timer);
+      timer = 0;
+      item.classList.toggle('is-open', isOpen);
+      trigger.setAttribute('aria-expanded', String(isOpen));
+      if (isOpen) {
+        panel.style.height = 'auto';
+        panel.hidden = false;
+        return;
+      }
+      panel.hidden = true;
+      panel.style.height = '';
+    };
+
+    const animatePanel = (isOpen) => {
+      window.clearTimeout(timer);
+      const currentTransition = transitionId + 1;
+      transitionId = currentTransition;
+      if (prefersReducedMotion()) {
+        complete(isOpen);
+        return;
+      }
+
+      if (isOpen) {
+        panel.hidden = false;
+        panel.style.height = '0px';
+        item.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+        panel.offsetHeight;
+        window.requestAnimationFrame(() => {
+          panel.style.height = `${panel.scrollHeight}px`;
+        });
+      } else {
+        panel.hidden = false;
+        panel.style.height = `${panel.scrollHeight}px`;
+        item.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+        panel.offsetHeight;
+        window.requestAnimationFrame(() => {
+          panel.style.height = '0px';
+        });
+      }
+
+      const onEnd = (event) => {
+        if (currentTransition !== transitionId || event.target !== panel || event.propertyName !== 'height') return;
+        panel.removeEventListener('transitionend', onEnd);
+        complete(isOpen);
+      };
+      panel.addEventListener('transitionend', onEnd);
+      timer = window.setTimeout(() => {
+        if (currentTransition !== transitionId) return;
+        panel.removeEventListener('transitionend', onEnd);
+        complete(isOpen);
+      }, 560);
+    };
+
+    trigger.addEventListener('click', () => {
+      animatePanel(trigger.getAttribute('aria-expanded') !== 'true');
     });
   });
 
