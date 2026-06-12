@@ -50,7 +50,6 @@
       '.gallery-overview-card',
       '.press-card',
       '.cta-band__inner',
-      '.contact-options',
       '.contact-form',
       '.legal-hero .shell',
       '.text-flow',

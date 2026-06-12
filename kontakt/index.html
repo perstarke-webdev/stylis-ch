@@ -35,7 +35,7 @@
 <a href="../angebote/" >Angebote</a>
 <a href="../vorher-nachher/" >Vorher/Nachher</a>
 <a href="../referenzen/" >Referenzen</a>
-<a href="../ueber-caroline/" >Über mich</a>
+<div class="site-nav__item site-nav__item--has-subnav"><a href="../ueber-caroline/" >Über mich</a><div class="site-subnav" aria-label="Über mich Untermenü"><a class="site-subnav__link" href="../ueber-caroline/#presse">Presse</a></div></div>
 <a href="../kontakt/" aria-current="page">Kontakt</a>
     </nav>
   </div>
@@ -51,54 +51,46 @@
   <div class="shell hero-copy__inner">
     <h1>Kontakt aufnehmen</h1>
     <p>Ich bin im ganzen deutschsprachigen Raum unterwegs. Auch wenn Sie etwas weiter weg wohnen, zögern Sie nicht, mich zu kontaktieren.</p>
-    <ul class="hero-copy__facts" aria-label="Kontakt-Kurzinfos">
-      <li>Schnell klären</li>
-      <li>Vor Ort</li>
-      <li>Geschenkgutschein</li>
+    <ul class="hero-copy__facts hero-copy__facts--contact" aria-label="Kontaktmöglichkeiten">
+      <li><a href="tel:+41793492592"><span class="hero-copy__fact-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.32 1.77.59 2.61a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.47-1.16a2 2 0 0 1 2.11-.45c.84.27 1.71.47 2.61.59A2 2 0 0 1 22 16.92Z"/></svg></span><span>079 349 25 92</span></a></li>
+      <li><a href="https://wa.me/41793492592" target="_blank" rel="noopener noreferrer"><span class="hero-copy__fact-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg></span><span>WhatsApp</span></a></li>
+      <li><a href="mailto:info@stylis.ch"><span class="hero-copy__fact-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg></span><span>info@stylis.ch</span></a></li>
+      <li><span class="hero-copy__fact-static"><span class="hero-copy__fact-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><span>8800 Thalwil</span></span></li>
     </ul>
   </div>
 </section>
 <!-- /COMPONENT 02 -->
 
-<!-- COMPONENT 13: Contact block -->
+<!-- COMPONENT 13: Contact form -->
 <section class="section contact-section" id="kontaktformular">
-  <div class="shell contact-grid">
-    <div class="contact-options">
-      <p class="eyebrow">Direktkontakt</p>
-      <h2>Beschreiben Sie kurz Ihre Wohnsituation.</h2>
-      <p>Ich melde mich mit einer Einschätzung, welches Angebot zu Ihrem Raum, Zeitplan und Budget passt.</p>
-      <div class="contact-buttons">
-        <a class="contact-button contact-button--whatsapp contact-button--primary" href="https://wa.me/41793492592" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg><span>Auf WhatsApp schreiben</span></a>
-        <a class="contact-button" href="tel:+41793492592"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.32 1.77.59 2.61a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.47-1.16a2 2 0 0 1 2.11-.45c.84.27 1.71.47 2.61.59A2 2 0 0 1 22 16.92Z"/></svg><span>Anrufen</span></a>
-        <a class="contact-button" href="mailto:info@stylis.ch"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg><span>E-Mail schreiben</span></a>
+  <div class="shell contact-form-shell">
+    <form class="contact-form contact-form--simple" data-contact-form data-form-mode="formspark" data-form-endpoint="https://submit-form.com/qmOOtdX2O" data-form-context="contact-page" data-form-min-submit-ms="1800" action="https://submit-form.com/qmOOtdX2O" method="POST" novalidate>
+      <div class="contact-form__head">
+        <h2>Unverbindliche Anfrage</h2>
+        <p>Schreiben Sie mir - ich melde mich zeitnah bei Ihnen.</p>
       </div>
-      <address class="address-block">
-        <strong>stylisch</strong><br>
-        Wohn- und Einrichtungsberatung<br>
-        Caroline Stupf<br>
-        8800 Thalwil, Schweiz<br>
-        <a href="tel:+41793492592">079 349 25 92</a><br>
-        <a href="mailto:info@stylis.ch">info@stylis.ch</a>
-      </address>
-      <p class="english-note">English speaking clients are more than welcome too.</p>
-    </div>
-    <form class="contact-form" data-contact-form data-form-mode="formspark" data-form-endpoint="https://submit-form.com/qmOOtdX2O" data-form-context="contact-page" data-form-min-submit-ms="1800" action="https://submit-form.com/qmOOtdX2O" method="POST" novalidate>
       <input type="hidden" name="_subject" value="Neue Anfrage über stylis.ch">
       <input type="hidden" name="source" value="contact-page">
       <div class="form-honeypot" aria-hidden="true">
         <label for="company">Bitte dieses Feld leer lassen</label>
         <input id="company" name="_honeypot" type="text" tabindex="-1" autocomplete="off">
       </div>
-      <div class="form-row"><label for="name">Ihr Name</label><input id="name" name="name" autocomplete="name" required></div>
-      <div class="form-row form-row--split"><div><label for="email">E-Mail-Adresse</label><input id="email" name="email" type="email" autocomplete="email" required></div><div><label for="phone">Telefonnummer <span>optional</span></label><input id="phone" name="phone" autocomplete="tel"></div></div>
-      <div class="form-row form-row--split"><div><label for="region">Ort oder Region <span>optional</span></label><input id="region" name="region" autocomplete="address-level2"></div><div><label for="topic">Wobei wünschen Sie Unterstützung?</label><select id="topic" name="topic"><option>Noch unsicher</option><option>Soforthilfe</option><option>Shoppingberatung</option><option>Gesamtkonzept</option><option>Umzugsberatung</option><option>Neu- oder Umbauberatung</option><option>Farbberatung</option></select></div></div>
-      <div class="form-row"><label for="message">Ihre Nachricht</label><textarea id="message" name="message" rows="6" required placeholder="Zum Beispiel: Welche Räume beschäftigen Sie? Was soll sich verändern? Gibt es einen Umzug, Umbau oder Termin?"></textarea></div>
-      <div class="form-row"><label for="heard">Wie sind Sie auf stylisch aufmerksam geworden? <span>optional</span></label><input id="heard" name="heard_from" autocomplete="off"></div>
-      <p class="form-note">Mit dem Senden akzeptieren Sie die <a href="../datenschutz/">Datenschutzerklärung</a>. Ihre Angaben werden über Formspark zur Bearbeitung der Anfrage weitergeleitet.</p>
-      <button class="button button--primary" type="submit" data-submit-label="Nachricht senden" data-loading-label="Nachricht wird gesendet ..." data-success-label="Nachricht gesendet">Nachricht senden<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+      <div class="form-row form-row--split">
+        <div><label for="name">Name *</label><input id="name" name="name" autocomplete="name" placeholder="Ihr Name" required></div>
+        <div><label for="email">E-Mail *</label><input id="email" name="email" type="email" autocomplete="email" placeholder="ihre@email.ch" required></div>
+      </div>
+      <div class="form-row"><label for="phone">Telefon</label><input id="phone" name="phone" autocomplete="tel" placeholder="079 ..."></div>
+      <div class="form-row"><label for="message">Nachricht *</label><textarea id="message" name="message" rows="5" required placeholder="Beschreiben Sie kurz Ihr Anliegen..."></textarea></div>
+      <p class="form-note">Mit dem Senden akzeptieren Sie die <a href="../datenschutz/">Datenschutzerklärung</a>.</p>
+      <button class="button button--primary" type="submit" data-submit-label="Anfrage senden" data-loading-label="Anfrage wird gesendet ..." data-success-label="Anfrage gesendet">Anfrage senden<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
       <p class="form-success" hidden data-form-success>Danke. Ihre Nachricht ist angekommen. Ich melde mich persönlich bei Ihnen.</p>
       <p class="form-status" data-form-status aria-live="polite"></p>
     </form>
+    <p class="gift-note">
+      <span class="gift-note__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5A2.5 2.5 0 1 1 10 4.5C10 6 12 7 12 7Z"/><path d="M12 7h4.5A2.5 2.5 0 1 0 14 4.5C14 6 12 7 12 7Z"/></svg></span>
+      <span><strong>Geschenkgutscheine:</strong> Freude schenken, einfach anfragen</span>
+    </p>
+    <p class="english-note contact-form-shell__note">English speaking clients are more than welcome too.</p>
   </div>
 </section>
 <!-- /COMPONENT 13 -->
@@ -113,7 +105,7 @@
       <p><a href="https://wa.me/41793492592" target="_blank" rel="noopener noreferrer">Auf WhatsApp schreiben</a><br><a href="tel:+41793492592">079 349 25 92</a><br><a href="mailto:info@stylis.ch">info@stylis.ch</a></p>
     </div>
     <nav aria-label="Angebote"><h2>Angebote</h2><ul><li><a href="../angebote/#soforthilfe">Soforthilfe</a></li><li><a href="../angebote/#shoppingberatung">Shoppingberatung</a></li><li><a href="../angebote/#gesamtkonzept">Gesamtkonzept</a></li><li><a href="../angebote/#umzugsberatung">Umzugsberatung</a></li><li><a href="../angebote/#neu-oder-umbauberatung">Neu- oder Umbauberatung</a></li><li><a href="../angebote/#farbberatung">Farbberatung</a></li></ul></nav>
-    <nav aria-label="Einblicke"><h2>Einblicke</h2><ul><li><a href="../referenzen/">Referenzen</a></li><li><a href="../vorher-nachher/">Vorher-Nachher</a></li><li><a href="../referenzen/#presse">Presse</a></li><li><a href="../ueber-caroline/">Über mich</a></li><li><a href="../ueber-caroline/#inspirationen">Inspirationen</a></li><li><a href="https://www.google.ch/search?q=stylisch+wohnberatung#lrd=0x479aa7c4d9ff8a95:0xa634b51ca632b87d,1,,," target="_blank" rel="noopener noreferrer">Google-Rezensionen</a></li><li><a href="https://www.instagram.com/stylisch_einrichtungsberatung/" target="_blank" rel="noopener noreferrer">Instagram</a></li></ul></nav>
+    <nav aria-label="Einblicke"><h2>Einblicke</h2><ul><li><a href="../referenzen/">Referenzen</a></li><li><a href="../vorher-nachher/">Vorher-Nachher</a></li><li><a href="../ueber-caroline/#presse">Presse</a></li><li><a href="../ueber-caroline/">Über mich</a></li><li><a href="https://www.google.ch/search?q=stylisch+wohnberatung#lrd=0x479aa7c4d9ff8a95:0xa634b51ca632b87d,1,,," target="_blank" rel="noopener noreferrer">Google-Rezensionen</a></li><li><a href="https://www.instagram.com/stylisch_einrichtungsberatung/" target="_blank" rel="noopener noreferrer">Instagram</a></li></ul></nav>
     <nav aria-label="Rechtliches"><h2>Rechtliches</h2><ul><li><a href="../impressum/">Impressum</a></li><li><a href="../datenschutz/">Datenschutz</a></li></ul></nav>
   </div>
   <div class="shell site-footer__bottom">
