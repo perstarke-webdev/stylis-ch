@@ -9,7 +9,8 @@
     "src": "../assets/images/site/before-after-gallery-02.webp",
     "alt": "Nachher: Wohnraum",
     "caption": "NACHHER - Wohnraum",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-02-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-03.webp",
@@ -21,7 +22,8 @@
     "src": "../assets/images/site/before-after-gallery-04.webp",
     "alt": "Nachher: Schlafzimmer",
     "caption": "NACHHER - Schlafzimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-04-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-05.webp",
@@ -33,7 +35,8 @@
     "src": "../assets/images/site/before-after-gallery-06.webp",
     "alt": "Nachher: Wohnbereich",
     "caption": "NACHHER - Wohnbereich",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-06-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-07.webp",
@@ -45,7 +48,8 @@
     "src": "../assets/images/site/before-after-gallery-08.webp",
     "alt": "Nachher: Garten und Sitzplatz",
     "caption": "NACHHER - Garten und Sitzplatz",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-08-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-09.webp",
@@ -57,7 +61,8 @@
     "src": "../assets/images/site/before-after-gallery-10.webp",
     "alt": "Nachher: Wohnzimmer",
     "caption": "NACHHER - Wohnzimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-10-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-11.webp",
@@ -69,7 +74,8 @@
     "src": "../assets/images/site/before-after-gallery-12.webp",
     "alt": "Nachher: Essbereich",
     "caption": "NACHHER - Essbereich",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-12-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-13.webp",
@@ -81,7 +87,8 @@
     "src": "../assets/images/site/before-after-gallery-14.webp",
     "alt": "Nachher: Eingangsbereich",
     "caption": "NACHHER - Eingangsbereich",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-14-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-15.webp",
@@ -93,7 +100,8 @@
     "src": "../assets/images/site/before-after-gallery-16.webp",
     "alt": "Nachher: Wohnbereich",
     "caption": "NACHHER - Wohnbereich",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-16-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-17.webp",
@@ -105,7 +113,8 @@
     "src": "../assets/images/site/before-after-gallery-18.webp",
     "alt": "Nachher: Schlafzimmer-Detail",
     "caption": "NACHHER - Schlafzimmer-Detail",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-18-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-19.webp",
@@ -117,7 +126,8 @@
     "src": "../assets/images/site/before-after-gallery-20.webp",
     "alt": "Nachher: Medienbereich",
     "caption": "NACHHER - Medienbereich",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-20-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-21.webp",
@@ -129,7 +139,8 @@
     "src": "../assets/images/site/before-after-gallery-22.webp",
     "alt": "Nachher: Wohn- und Essbereich",
     "caption": "NACHHER - Wohn- und Essbereich",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-22-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-23.webp",
@@ -141,7 +152,8 @@
     "src": "../assets/images/site/before-after-gallery-24.webp",
     "alt": "Nachher: Küche",
     "caption": "NACHHER - Küche",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-24-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-25.webp",
@@ -153,7 +165,8 @@
     "src": "../assets/images/site/before-after-gallery-26.webp",
     "alt": "Nachher: Wohnraum",
     "caption": "NACHHER - Wohnraum",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-26-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-27.webp",
@@ -165,7 +178,8 @@
     "src": "../assets/images/site/before-after-gallery-28.webp",
     "alt": "Nachher: Arbeitszimmer",
     "caption": "NACHHER - Arbeitszimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-28-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-29.webp",
@@ -177,7 +191,8 @@
     "src": "../assets/images/site/before-after-gallery-30.webp",
     "alt": "Nachher: Wohnwand",
     "caption": "NACHHER - Wohnwand",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-30-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-31.webp",
@@ -189,7 +204,8 @@
     "src": "../assets/images/site/before-after-gallery-32.webp",
     "alt": "Nachher: Schlafzimmer",
     "caption": "NACHHER - Schlafzimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-32-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-33.webp",
@@ -201,7 +217,8 @@
     "src": "../assets/images/site/before-after-gallery-34.webp",
     "alt": "Nachher: Balkon",
     "caption": "NACHHER - Balkon",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-34-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-35.webp",
@@ -213,7 +230,8 @@
     "src": "../assets/images/site/before-after-gallery-36.webp",
     "alt": "Nachher: Wohnzimmer",
     "caption": "NACHHER - Wohnzimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-36-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-37.webp",
@@ -225,7 +243,8 @@
     "src": "../assets/images/site/before-after-gallery-38.webp",
     "alt": "Nachher: Schlafzimmer",
     "caption": "NACHHER - Schlafzimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-38-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-39.webp",
@@ -237,7 +256,8 @@
     "src": "../assets/images/site/before-after-gallery-40.webp",
     "alt": "Nachher: Eingang und Flur",
     "caption": "NACHHER - Eingang und Flur",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-40-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-41.webp",
@@ -249,7 +269,8 @@
     "src": "../assets/images/site/before-after-gallery-42.webp",
     "alt": "Nachher: Terrasse",
     "caption": "NACHHER - Terrasse",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-42-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-43.webp",
@@ -261,7 +282,8 @@
     "src": "../assets/images/site/before-after-gallery-44.webp",
     "alt": "Nachher: Wohnraum",
     "caption": "NACHHER - Wohnraum",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-44-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-45.webp",
@@ -273,7 +295,8 @@
     "src": "../assets/images/site/before-after-gallery-46.webp",
     "alt": "Nachher: Business-Raum",
     "caption": "NACHHER - Business-Raum",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-46-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-47.webp",
@@ -285,7 +308,8 @@
     "src": "../assets/images/site/before-after-gallery-48.webp",
     "alt": "Nachher: Ess- und Besprechungsbereich",
     "caption": "NACHHER - Ess- und Besprechungsbereich",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-48-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-49.webp",
@@ -297,7 +321,8 @@
     "src": "../assets/images/site/before-after-gallery-50.webp",
     "alt": "Nachher: Bad",
     "caption": "NACHHER - Bad",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-50-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-51.webp",
@@ -309,7 +334,8 @@
     "src": "../assets/images/site/before-after-gallery-52.webp",
     "alt": "Nachher: TV- und Stauraumwand",
     "caption": "NACHHER - TV- und Stauraumwand",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-52-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-53.webp",
@@ -321,7 +347,8 @@
     "src": "../assets/images/site/before-after-gallery-54.webp",
     "alt": "Nachher: Schlafzimmer",
     "caption": "NACHHER - Schlafzimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-54-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-55.webp",
@@ -333,7 +360,8 @@
     "src": "../assets/images/site/before-after-gallery-56.webp",
     "alt": "Nachher: Arbeitszimmer",
     "caption": "NACHHER - Arbeitszimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-56-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-57.webp",
@@ -345,7 +373,8 @@
     "src": "../assets/images/site/before-after-gallery-58.webp",
     "alt": "Nachher: Wohn- und Arbeitsbereich",
     "caption": "NACHHER - Wohn- und Arbeitsbereich",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-58-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-59.webp",
@@ -357,7 +386,8 @@
     "src": "../assets/images/site/before-after-gallery-60.webp",
     "alt": "Nachher: Balkon",
     "caption": "NACHHER - Balkon",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-60-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-61.webp",
@@ -369,7 +399,8 @@
     "src": "../assets/images/site/before-after-gallery-62.webp",
     "alt": "Nachher: Schlafzimmer",
     "caption": "NACHHER - Schlafzimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-62-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-63.webp",
@@ -381,7 +412,8 @@
     "src": "../assets/images/site/before-after-gallery-64.webp",
     "alt": "Nachher: Balkon",
     "caption": "NACHHER - Balkon",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-64-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-65.webp",
@@ -393,7 +425,8 @@
     "src": "../assets/images/site/before-after-gallery-66.webp",
     "alt": "Nachher: Homeoffice",
     "caption": "NACHHER - Homeoffice",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-66-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-67.webp",
@@ -405,7 +438,8 @@
     "src": "../assets/images/site/before-after-gallery-68.webp",
     "alt": "Nachher: Balkon",
     "caption": "NACHHER - Balkon",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-68-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-69.webp",
@@ -417,7 +451,8 @@
     "src": "../assets/images/site/before-after-gallery-70.webp",
     "alt": "Nachher: Schlafzimmer",
     "caption": "NACHHER - Schlafzimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-70-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-71.webp",
@@ -429,7 +464,8 @@
     "src": "../assets/images/site/before-after-gallery-72.webp",
     "alt": "Nachher: Kommode und Stauraum",
     "caption": "NACHHER - Kommode und Stauraum",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-72-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-73.webp",
@@ -441,7 +477,8 @@
     "src": "../assets/images/site/before-after-gallery-74.webp",
     "alt": "Nachher: Eingangsbereich",
     "caption": "NACHHER - Eingangsbereich",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-74-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-75.webp",
@@ -453,7 +490,8 @@
     "src": "../assets/images/site/before-after-gallery-76.webp",
     "alt": "Nachher: Bad",
     "caption": "NACHHER - Bad",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-76-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-77.webp",
@@ -465,7 +503,8 @@
     "src": "../assets/images/site/before-after-gallery-78.webp",
     "alt": "Nachher: Schlafzimmer",
     "caption": "NACHHER - Schlafzimmer",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-78-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-79.webp",
@@ -477,7 +516,8 @@
     "src": "../assets/images/site/before-after-gallery-80.webp",
     "alt": "Nachher: Bad im Umbau",
     "caption": "NACHHER - Bad im Umbau",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-80-thumb.webp"
   },
   {
     "src": "../assets/images/site/before-after-gallery-81.webp",
@@ -489,6 +529,7 @@
     "src": "../assets/images/site/before-after-gallery-82.webp",
     "alt": "Nachher: Praxis- und Businessraum",
     "caption": "NACHHER - Praxis- und Businessraum",
-    "tag": "NACHHER"
+    "tag": "NACHHER",
+    "thumb": "../assets/images/site/before-after-gallery-82-thumb.webp"
   }
 ]

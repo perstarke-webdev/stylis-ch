@@ -496,8 +496,8 @@
   });
 
   const lightboxButtons = document.querySelectorAll('[data-lightbox], [data-lightbox-gallery]');
-  const overviewButtons = document.querySelectorAll('[data-gallery-overview], [data-gallery-overview-url]');
-  if (lightboxButtons.length || overviewButtons.length) {
+  const inlineOverviews = document.querySelectorAll('[data-gallery-inline-overview]');
+  if (lightboxButtons.length || inlineOverviews.length) {
     const dialog = document.createElement('dialog');
     dialog.className = 'lightbox';
     dialog.innerHTML = [
@@ -651,87 +651,56 @@
       if (event.key === 'ArrowRight') moveLightbox(1);
     });
 
-    if (overviewButtons.length) {
-      const overviewDialog = document.createElement('dialog');
-      overviewDialog.className = 'gallery-overview';
-      overviewDialog.innerHTML = [
-        '<div class="gallery-overview__shell">',
-        '<div class="gallery-overview__head">',
-        '<div><h2>Alle Vorher-Nachher-Bilder</h2><p>Übersicht öffnen, durchscrollen und einzelne Bilder gross ansehen.</p></div>',
-        '<button type="button" class="gallery-overview__close" aria-label="Galerie schliessen"><span class="control-icon control-icon--close" aria-hidden="true"></span></button>',
-        '</div>',
-        '<div class="gallery-overview__grid" data-gallery-overview-grid></div>',
-        '</div>',
-      ].join('');
-      document.body.appendChild(overviewDialog);
-      const overviewClose = overviewDialog.querySelector('.gallery-overview__close');
-      const overviewGrid = overviewDialog.querySelector('[data-gallery-overview-grid]');
-      let overviewItems = [];
-
+    if (inlineOverviews.length) {
       const escapeHtml = (value) => String(value || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 
-      const renderOverview = (items) => {
-        overviewItems = items;
-        const cards = items
-          .map((item, itemIndex) => ({ ...item, sourceIndex: itemIndex }))
-          .filter((item) => String(item.tag || '').toUpperCase() !== 'VORHER');
-        overviewGrid.innerHTML = cards.map((item) => [
-          `<div class="gallery-overview-card" role="button" tabindex="0" data-gallery-index="${item.sourceIndex}">`,
-          `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.alt || item.caption)}" loading="lazy" decoding="async">`,
-          `<strong>${escapeHtml(item.tag || '')}</strong>`,
-          `<span>${escapeHtml(item.caption || item.alt || '')}</span>`,
-          '</div>',
-        ].join('')).join('');
-      };
+      const buildOverviewCards = (items) => items
+        .map((item, itemIndex) => ({ ...item, sourceIndex: itemIndex }))
+        .filter((item) => String(item.tag || '').toUpperCase() !== 'VORHER')
+        .map((item) => {
+          const label = escapeHtml(String(item.caption || item.alt || '').replace(/^\s*(vorher|nachher)\s*[-–—]\s*/i, ''));
+          return [
+            `<div class="gallery-overview-card gallery-overview-card--inline" role="button" tabindex="0" aria-label="${label} - Vorher und Nachher ansehen" data-gallery-index="${item.sourceIndex}">`,
+            `<img src="${escapeHtml(item.thumb || item.src)}" alt="" loading="lazy" decoding="async">`,
+            `<span>${label}</span>`,
+            '</div>',
+          ].join('');
+        })
+        .join('');
 
-      const getOverviewItems = (button) => {
-        if (button.dataset.galleryOverviewUrl) {
-          return fetch(button.dataset.galleryOverviewUrl)
-            .then((response) => {
-              if (!response.ok) throw new Error('Gallery overview could not be loaded');
-              return response.json();
-            })
-            .then((items) => (Array.isArray(items) ? items : []))
-            .catch(() => []);
-        }
-        return Promise.resolve(parseItems(button.dataset.galleryOverview || '[]'));
-      };
-
-      overviewButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          const originalLabel = button.innerHTML;
-          button.disabled = true;
-          getOverviewItems(button).then((items) => {
-            button.disabled = false;
-            button.innerHTML = originalLabel;
+      inlineOverviews.forEach((container) => {
+        const url = container.dataset.galleryOverviewUrl;
+        if (!url) return;
+        fetch(url)
+          .then((response) => {
+            if (!response.ok) throw new Error('Gallery overview could not be loaded');
+            return response.json();
+          })
+          .then((items) => (Array.isArray(items) ? items : []))
+          .catch(() => [])
+          .then((items) => {
             if (!items.length) return;
-            renderOverview(items);
-            overviewDialog.showModal();
-            overviewClose.focus({ preventScroll: true });
+            container.innerHTML = buildOverviewCards(items);
+            container.classList.add('is-loaded');
+            const activate = (card) => {
+              if (!card) return;
+              openLightbox(items, Number(card.dataset.galleryIndex) || 0);
+            };
+            container.addEventListener('click', (event) => {
+              activate(event.target.closest('[data-gallery-index]'));
+            });
+            container.addEventListener('keydown', (event) => {
+              if (event.key !== 'Enter' && event.key !== ' ') return;
+              const card = event.target.closest('[data-gallery-index]');
+              if (!card) return;
+              event.preventDefault();
+              activate(card);
+            });
           });
-        });
-      });
-      overviewGrid.addEventListener('click', (event) => {
-        const card = event.target.closest('[data-gallery-index]');
-        if (!card) return;
-        overviewDialog.close();
-        openLightbox(overviewItems, Number(card.dataset.galleryIndex) || 0);
-      });
-      overviewGrid.addEventListener('keydown', (event) => {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
-        const card = event.target.closest('[data-gallery-index]');
-        if (!card) return;
-        event.preventDefault();
-        overviewDialog.close();
-        openLightbox(overviewItems, Number(card.dataset.galleryIndex) || 0);
-      });
-      overviewClose.addEventListener('click', () => overviewDialog.close());
-      overviewDialog.addEventListener('click', (event) => {
-        if (event.target === overviewDialog) overviewDialog.close();
       });
     }
   }
