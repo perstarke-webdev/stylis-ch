@@ -52,7 +52,15 @@
     });
   };
 
+  let lastHeroSyncWidth = Math.round(window.visualViewport?.width || window.innerWidth || 0);
   const scheduleHeroFoldSync = () => {
+    // Only re-measure when the viewport WIDTH changes (orientation / desktop resize).
+    // Ignore height-only changes: on mobile they come from the URL bar showing/hiding
+    // during scroll, and re-measuring would resize the hero box and visibly rescale
+    // the object-fit:cover image ("zoom while scrolling").
+    const width = Math.round(window.visualViewport?.width || window.innerWidth || 0);
+    if (width === lastHeroSyncWidth) return;
+    lastHeroSyncWidth = width;
     window.requestAnimationFrame(syncHeroFolds);
   };
 

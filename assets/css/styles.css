@@ -278,7 +278,7 @@ p { margin: 0; }
 .hero-copy--page .hero-copy__inner { padding-block: clamp(1.85rem, 3.5vw, 2.85rem); }
 .hero-copy .hero-copy__inner--with-facts { padding-bottom: 0; }
 .hero-copy--page { background: var(--color-cream-white); border-bottom-color: color-mix(in oklch, var(--color-primary) 10%, var(--color-line)); }
-.hero-copy p.hero-copy__english { justify-self: start; width: fit-content; max-width: 100%; display: inline-flex; align-items: center; gap: .5rem; margin-top: .72rem; padding-top: .68rem; border-top: 1px solid color-mix(in oklch, var(--color-primary) 34%, var(--color-line)); color: var(--color-primary-dark); font-weight: var(--weight-regular); line-height: 1.2; text-wrap: pretty; }
+.hero-copy p.hero-copy__english { justify-self: start; width: fit-content; max-width: 100%; display: inline-flex; align-items: center; gap: .5rem; margin-top: .72rem; padding-top: .68rem; border-top: 1px solid color-mix(in oklch, var(--color-primary) 34%, var(--color-line)); }
 .hero-copy__english .icon { flex: 0 0 auto; width: 1.2rem; height: 1.2rem; color: var(--color-primary); }
 .hero-copy--page h1 { max-width: 15em; font-size: clamp(3.8rem, 5vw, 6.4rem); line-height: .68; }
 .hero-copy--page p { max-width: 62ch; }
