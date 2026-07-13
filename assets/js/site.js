@@ -251,7 +251,8 @@
     start();
   });
 
-  document.querySelectorAll('[data-comparison-slider]').forEach((slider) => {
+  const initComparisonSlider = (slider) => {
+    if (slider.dataset.comparisonSliderReady === 'true') return;
     const range = slider.querySelector('.comparison-card__range');
     if (!range) return;
     const sync = () => {
@@ -260,8 +261,11 @@
     };
     range.addEventListener('input', sync);
     range.addEventListener('change', sync);
+    slider.dataset.comparisonSliderReady = 'true';
     sync();
-  });
+  };
+
+  document.querySelectorAll('[data-comparison-slider]').forEach(initComparisonSlider);
 
   document.querySelectorAll('.reference-story__more').forEach((details) => {
     const story = details.closest('.reference-story');
@@ -504,8 +508,8 @@
   });
 
   const lightboxButtons = document.querySelectorAll('[data-lightbox], [data-lightbox-gallery]');
-  const inlineOverviews = document.querySelectorAll('[data-gallery-inline-overview]');
-  if (lightboxButtons.length || inlineOverviews.length) {
+  const comparisonGalleries = document.querySelectorAll('[data-comparison-gallery]');
+  if (lightboxButtons.length || comparisonGalleries.length) {
     const dialog = document.createElement('dialog');
     dialog.className = 'lightbox';
     dialog.innerHTML = [
@@ -575,7 +579,8 @@
       close.focus({ preventScroll: true });
     };
 
-    document.querySelectorAll('[data-comparison-slider][data-lightbox-gallery]').forEach((slider) => {
+    const initComparisonLightbox = (slider) => {
+      if (slider.dataset.comparisonLightboxReady === 'true') return;
       const range = slider.querySelector('.comparison-card__range');
       const handle = slider.querySelector('.comparison-card__handle');
       let pointerId = null;
@@ -630,7 +635,15 @@
         event.stopPropagation();
         openLightbox(parseGallery(slider), 0);
       });
-    });
+      range?.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        openLightbox(parseGallery(slider), 0);
+      });
+      slider.dataset.comparisonLightboxReady = 'true';
+    };
+
+    document.querySelectorAll('[data-comparison-slider][data-lightbox-gallery]').forEach(initComparisonLightbox);
 
     lightboxButtons.forEach((button) => {
       if (button.matches('[data-comparison-slider]')) return;
@@ -659,54 +672,65 @@
       if (event.key === 'ArrowRight') moveLightbox(1);
     });
 
-    if (inlineOverviews.length) {
+    if (comparisonGalleries.length) {
       const escapeHtml = (value) => String(value || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 
-      const buildOverviewCards = (items) => items
-        .map((item, itemIndex) => ({ ...item, sourceIndex: itemIndex }))
-        .filter((item) => String(item.tag || '').toUpperCase() !== 'VORHER')
-        .map((item) => {
-          const label = escapeHtml(String(item.caption || item.alt || '').replace(/^\s*(vorher|nachher)\s*[-–—]\s*/i, ''));
+      const stripStateLabel = (value) => String(value || '').replace(/^\s*(vorher|nachher)\s*[-–—:]\s*/i, '');
+
+      const pairComparisonItems = (items) => {
+        const pairs = [];
+        for (let itemIndex = 0; itemIndex < items.length; itemIndex += 2) {
+          const pair = items.slice(itemIndex, itemIndex + 2);
+          const before = pair.find((item) => String(item.tag || '').toUpperCase() === 'VORHER');
+          const after = pair.find((item) => String(item.tag || '').toUpperCase() === 'NACHHER');
+          if (before && after) pairs.push({ before, after });
+        }
+        return pairs;
+      };
+
+      const buildComparisonCards = (items) => pairComparisonItems(items)
+        .map(({ before, after }) => {
+          const labelText = stripStateLabel(after.caption || after.alt || before.caption || before.alt || 'Raum');
+          const label = escapeHtml(labelText);
+          const lightboxItems = escapeHtml(JSON.stringify([after, before]));
+          const beforeSrc = escapeHtml(before.thumb || before.src);
+          const afterSrc = escapeHtml(after.thumb || after.src);
           return [
-            `<div class="gallery-overview-card gallery-overview-card--inline" role="button" tabindex="0" aria-label="${label} - Vorher und Nachher ansehen" data-gallery-index="${item.sourceIndex}">`,
-            `<img src="${escapeHtml(item.thumb || item.src)}" alt="" loading="lazy" decoding="async">`,
-            `<span>${label}</span>`,
+            '<figure class="gallery-item comparison-card">',
+            `<div class="gallery-item__button comparison-card__button comparison-card__slider" role="group" data-comparison-slider data-lightbox-gallery="${lightboxItems}" style="--comparison-split: 33%;" aria-label="${label} vorher und nachher">`,
+            '<span class="comparison-card__pair" aria-hidden="true">',
+            `<span class="comparison-card__panel comparison-card__panel--before"><img class="gallery-item__image" src="${beforeSrc}" alt="" loading="lazy" decoding="async"><span class="comparison-card__label">VORHER</span></span>`,
+            `<span class="comparison-card__panel comparison-card__panel--after"><img class="gallery-item__image" src="${afterSrc}" alt="" loading="lazy" decoding="async"><span class="comparison-card__label comparison-card__label--after">NACHHER</span></span>`,
+            '</span>',
+            '<span class="comparison-card__handle" aria-hidden="true"><span></span></span>',
+            `<input class="comparison-card__range" type="range" min="0" max="100" value="33" aria-label="${label} vorher und nachher verschieben" aria-description="Mit Enter gross ansehen">`,
             '</div>',
+            '</figure>',
           ].join('');
         })
         .join('');
 
-      inlineOverviews.forEach((container) => {
-        const url = container.dataset.galleryOverviewUrl;
+      comparisonGalleries.forEach((container) => {
+        const url = container.dataset.comparisonGalleryUrl;
         if (!url) return;
         fetch(url)
           .then((response) => {
-            if (!response.ok) throw new Error('Gallery overview could not be loaded');
+            if (!response.ok) throw new Error('Comparison gallery could not be loaded');
             return response.json();
           })
           .then((items) => (Array.isArray(items) ? items : []))
           .catch(() => [])
           .then((items) => {
             if (!items.length) return;
-            container.innerHTML = buildOverviewCards(items);
+            container.innerHTML = buildComparisonCards(items);
             container.classList.add('is-loaded');
-            const activate = (card) => {
-              if (!card) return;
-              openLightbox(items, Number(card.dataset.galleryIndex) || 0);
-            };
-            container.addEventListener('click', (event) => {
-              activate(event.target.closest('[data-gallery-index]'));
-            });
-            container.addEventListener('keydown', (event) => {
-              if (event.key !== 'Enter' && event.key !== ' ') return;
-              const card = event.target.closest('[data-gallery-index]');
-              if (!card) return;
-              event.preventDefault();
-              activate(card);
+            container.querySelectorAll('[data-comparison-slider]').forEach((slider) => {
+              initComparisonSlider(slider);
+              initComparisonLightbox(slider);
             });
           });
       });
