@@ -251,6 +251,17 @@
     start();
   });
 
+  const comparisonTabletLayout = window.matchMedia('(min-width: 761px) and (max-width: 980px)');
+  const getComparisonDefaultSplit = () => (comparisonTabletLayout.matches ? 45 : 33);
+  const applyComparisonDefaultSplit = (slider) => {
+    if (slider.dataset.comparisonInteracted === 'true') return;
+    const range = slider.querySelector('.comparison-card__range');
+    if (!range) return;
+    const value = getComparisonDefaultSplit();
+    range.value = `${value}`;
+    slider.style.setProperty('--comparison-split', `${value}%`);
+  };
+
   const initComparisonSlider = (slider) => {
     if (slider.dataset.comparisonSliderReady === 'true') return;
     const range = slider.querySelector('.comparison-card__range');
@@ -259,13 +270,26 @@
       const value = Math.max(Number(range.min) || 0, Math.min(Number(range.max) || 100, Number(range.value) || 67));
       slider.style.setProperty('--comparison-split', `${value}%`);
     };
-    range.addEventListener('input', sync);
-    range.addEventListener('change', sync);
+    const syncFromInteraction = () => {
+      slider.dataset.comparisonInteracted = 'true';
+      sync();
+    };
+    range.addEventListener('input', syncFromInteraction);
+    range.addEventListener('change', syncFromInteraction);
     slider.dataset.comparisonSliderReady = 'true';
+    applyComparisonDefaultSplit(slider);
     sync();
   };
 
   document.querySelectorAll('[data-comparison-slider]').forEach(initComparisonSlider);
+  const syncUntouchedComparisonSliders = () => {
+    document.querySelectorAll('[data-comparison-slider]').forEach(applyComparisonDefaultSplit);
+  };
+  if (typeof comparisonTabletLayout.addEventListener === 'function') {
+    comparisonTabletLayout.addEventListener('change', syncUntouchedComparisonSliders);
+  } else {
+    comparisonTabletLayout.addListener(syncUntouchedComparisonSliders);
+  }
 
   document.querySelectorAll('.reference-story__more').forEach((details) => {
     const story = details.closest('.reference-story');
@@ -607,6 +631,7 @@
         if (event.button !== undefined && event.button !== 0) return;
         event.preventDefault();
         event.stopPropagation();
+        slider.dataset.comparisonInteracted = 'true';
         pointerId = event.pointerId;
         slider.classList.add('is-dragging');
         handle.setPointerCapture?.(pointerId);

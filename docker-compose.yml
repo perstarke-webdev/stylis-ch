@@ -1,6 +1,9 @@
+name: stylis-ch
+
 services:
   jekyll:
-    image: bretfisher/jekyll-serve
+    image: bretfisher/jekyll-serve@sha256:9e3bdfa943f888961b82f20111d9db345a6387f6a7c871991ee3ae037bb5a514
+    container_name: stylis-ch-preview-4000
     volumes:
       - .:/site
     ports:
